@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import * as BooksApi from './BooksAPI'
 import { Link } from 'react-router-dom'
 import Book from './Book'
+import * as BooksApi from './BooksAPI'
 
 export const BooksHome = React.memo((props) => {
 
@@ -12,12 +11,15 @@ export const BooksHome = React.memo((props) => {
         BooksApi.getAll()
             .then(books => {
                 setBooks(books);
-                console.log(books);
             });
     };
     React.useEffect(() => {
         fetchBooks();
     }, []);
+
+    const refresh = () => {
+        fetchBooks();
+    }
 
     const shelves = [
         {
@@ -37,27 +39,27 @@ export const BooksHome = React.memo((props) => {
             value: 'none'
         }];
 
-    let book = books[0];
     return (<div className="list-books">
         <div className="list-books-title">
             <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
             <div>
-                {shelves.map(shelf => (<div className="bookshelf">
-                    <h2 className="bookshelf-title">{shelf.name}</h2>
-                    <div className="bookshelf-books">
-                        <ol className="books-grid">
-                            {books
-                                .filter(book => book.shelf === shelf.value)
-                                .map(book => (
-                                    <li key={book.id}>
-                                        <Book shelves={shelves} book={book} />
-                                    </li>)
-                                )}
-                        </ol>
-                    </div>
-                </div>))
+                {shelves.map(shelf => (
+                    <div className="bookshelf">
+                        <h2 className="bookshelf-title">{shelf.name}</h2>
+                        <div className="bookshelf-books">
+                            <ol className="books-grid">
+                                {books
+                                    .filter(book => book.shelf === shelf.value)
+                                    .map(book => (
+                                        <li key={book.id}>
+                                            <Book shelves={shelves} book={book} onChange={() => { refresh(); }} />
+                                        </li>)
+                                    )}
+                            </ol>
+                        </div>
+                    </div>))
                 }
             </div>
         </div>
@@ -69,7 +71,3 @@ export const BooksHome = React.memo((props) => {
         </div>
     </div>);
 });
-
-BooksHome.PropTypes = {
-
-}

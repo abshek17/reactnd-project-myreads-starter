@@ -1,43 +1,23 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
+import AddBook from './AddBook'
 import './App.css'
-import { Link } from 'react-router-dom'
 import { BooksHome } from './BooksHome'
 
-const BooksApp =  React.memo(props => {
+const BooksApp = React.memo(props => {
 
-    return (
-      <div className="app">
-        <Route path='/addBook' render={() => (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <Link exact className={'close-search'} to={'/'}>Close</Link>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+  return (
+    <div className="app">
+      <Route path='/addBook' render={() => (
+        <AddBook />
+      )} />
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author" />
+      <Route exact path='/' render={() => (
+        <BooksHome />
+      )} />
+    </div>
+  )
 
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-        )} />
-
-        <Route exact path='/' render={() => (
-          <BooksHome />
-        )} />
-      </div>
-    )
-  
 });
 
 export default BooksApp

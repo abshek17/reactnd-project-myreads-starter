@@ -5,17 +5,18 @@ import * as BooksApi from './BooksAPI'
 
 const Book = React.memo(props => {
 
-    const { book, shelves } = props;
+    const { book, shelves, onChange } = props;
 
     const switchShelf = (book, shelf) => {
-        BooksApi
+        return BooksApi
             .update(book, shelf);
 
     };
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-        switchShelf(book, selectedValue);
+        switchShelf(book, selectedValue)
+            .then(response => onChange());
     }
 
     return book && (
@@ -23,9 +24,9 @@ const Book = React.memo(props => {
             <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}></div>
                 <div className="book-shelf-changer">
-                    <select id='shelfSelector' onChange={handleChange}>
+                    <select id='shelfSelector' onChange={handleChange} value={book.shelf}>
                         <option value="move" key='moveTo' disabled>Move to...</option>
-                        {shelves.map(shelf => <option key={shelf.value} selected value={shelf.value}>{shelf.name}</option>)}
+                        {shelves.map(shelf => <option key={shelf.value} value={shelf.value}>{shelf.name}</option>)}
                     </select>
                 </div>
             </div>
@@ -36,6 +37,7 @@ const Book = React.memo(props => {
 
 Book.propTypes = {
     book: PropTypes.any,
-    shelves: PropTypes.array.isRequired
+    shelves: PropTypes.array.isRequired,
+    onChange: PropTypes.func.isRequired
 }
 export default Book;
