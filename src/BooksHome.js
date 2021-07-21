@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Book from './Book'
 import * as BooksApi from './BooksAPI'
+import { shelves } from './Constants'
 
 export const BooksHome = React.memo((props) => {
 
@@ -21,23 +22,7 @@ export const BooksHome = React.memo((props) => {
         fetchBooks();
     }
 
-    const shelves = [
-        {
-            name: 'Currently reading',
-            value: 'currentlyReading'
-        },
-        {
-            name: 'Want to read',
-            value: 'wantToRead'
-        },
-        {
-            name: 'Read',
-            value: 'read'
-        },
-        {
-            name: 'None',
-            value: 'none'
-        }];
+
 
     return (<div className="list-books">
         <div className="list-books-title">

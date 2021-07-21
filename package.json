@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "debounce": "^1.2.1",
     "form-serialize": "^0.7.2",
     "prop-types": "^15.6.2",
     "react": "^17.0.2",

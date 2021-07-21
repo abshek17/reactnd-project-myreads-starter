@@ -1,29 +1,63 @@
 import React from 'react';
 import * as BooksApi from './BooksAPI'
 import { Link } from 'react-router-dom'
+import SearchBox from './SearchBox'
+import Book from './Book';
+import { shelves, useFetchBooks } from './Constants'
 
+const NoneShelf = "none";
 
 const AddBook = React.memo((props) => {
-    return (<div className="search-books">
-        <div className="search-books-bar">
-            <Link exact className={'close-search'} to={'/'}>Close</Link>
-            <div className="search-books-input-wrapper">
-                {/*
-          NOTES: The search from BooksAPI is limited to a particular set of search terms.
-          You can find these search terms here:
-          https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-          However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-          you don't find a specific author or title. Every search is limited by search terms.
-        */}
-                <input type="text" placeholder="Search by title or author" />
+    const [searchResults, setSearchResults] = React.useState([]);
+    const [addedBooks, setAddedBooks] = React.useState([]);
+    const onSearch = (query) => {
+        BooksApi.search(query || "")
+            .then(result => {
+                // handle the case where the search results nothing
+                if (!result.error) {
+                    setSearchResults(result || []);
+                } else {
+                    setSearchResults([]);
+                }
+            })
+            .catch(error => setSearchResults([]));
+    };
 
+    React.useEffect(() => {
+        useFetchBooks()
+            .then(books => {
+                setAddedBooks(books);
+            });
+    }, []);
+
+    return (
+        <div className="search-books">
+            <SearchBox
+                onSearch={onSearch}
+            />
+            <div className="search-books-results">
+                <ol className="books-grid">
+                    {
+                        searchResults.map(result => {
+                            // compute shelf of a book if it has already been added
+                            const matchedBook = addedBooks.find(addedBook => addedBook.id === result.id);
+                            if(matchedBook) {
+                                result.shelf = matchedBook.shelf || NoneShelf;
+                            } else {
+                                result.shelf = NoneShelf;
+                            }
+
+                            return (
+                                <li key={result && result.id}>
+                                    <Book book={result} shelves={shelves} onChange={() => { }} />
+                                </li>
+                            )
+                        })
+                    }
+                </ol>
             </div>
-        </div>
-        <div className="search-books-results">
-            <ol className="books-grid"></ol>
-        </div>
-    </div>);
+        </div>);
 });
 
 export default AddBook;
