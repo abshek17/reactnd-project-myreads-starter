@@ -8,7 +8,7 @@ const NoneShelf = "none";
 
 const AddBook = React.memo((props) => {
 
-    const [searchResults, setSearchResults] = React.useState([]);
+    const [searchResults, setSearchResults] = React.useState(undefined);
     const [addedBooks, setAddedBooks] = React.useState([]);
     const onSearch = (query) => {
         BooksApi.search(query || "")
@@ -38,21 +38,27 @@ const AddBook = React.memo((props) => {
             <div className="search-books-results">
                 <ol className="books-grid">
                     {
-                        searchResults.map(result => {
-                            // compute shelf of a book if it has already been added
-                            const matchedBook = addedBooks.find(addedBook => addedBook.id === result.id);
-                            if(matchedBook) {
-                                result.shelf = matchedBook.shelf || NoneShelf;
-                            } else {
-                                result.shelf = NoneShelf;
-                            }
 
-                            return (
-                                <li key={result && result.id}>
-                                    <Book book={result} shelves={shelves} onChange={() => { }} />
-                                </li>
-                            )
-                        })
+                        searchResults ?
+                            searchResults.length > 0 && searchResults.map(result => {
+                                // compute shelf of a book if it has already been added
+                                const matchedBook = addedBooks.find(addedBook => addedBook.id === result.id);
+                                if (matchedBook) {
+                                    result.shelf = matchedBook.shelf || NoneShelf;
+                                } else {
+                                    result.shelf = NoneShelf;
+                                }
+
+                                return (
+                                    <li key={result && result.id}>
+                                        <Book book={result} shelves={shelves} onChange={() => { }} />
+                                    </li>
+                                )
+                            }) || (
+                                <div>
+                                    <h3>No books were found matching your query. Please try a different search term.</h3>
+                                </div>)
+                            : (<div></div>)
                     }
                 </ol>
             </div>

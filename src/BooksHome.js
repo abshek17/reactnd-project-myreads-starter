@@ -30,7 +30,9 @@ export const BooksHome = React.memo((props) => {
         </div>
         <div className="list-books-content">
             <div>
-                {shelves.map(shelf => (
+                {shelves
+                .filter(shelf => shelf.value !== 'none')
+                .map(shelf => (
                     <div key={shelf.value} className="bookshelf">
                         <h2 className="bookshelf-title">{shelf.name}</h2>
                         <div className="bookshelf-books">
@@ -49,7 +51,7 @@ export const BooksHome = React.memo((props) => {
             </div>
         </div>
         <div className="open-search">
-            <Link to={'/addBook'}>
+            <Link to={'/search'}>
                 <button >Add a book</button>
             </Link>
 

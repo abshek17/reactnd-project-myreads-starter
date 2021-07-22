@@ -8,7 +8,7 @@ const BooksApp = React.memo(props => {
 
   return (
     <div className="app">
-      <Route path='/addBook' render={() => (
+      <Route path='/search' render={() => (
         <AddBook />
       )} />
 
