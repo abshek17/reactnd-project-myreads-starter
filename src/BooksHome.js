@@ -31,7 +31,7 @@ export const BooksHome = React.memo((props) => {
         <div className="list-books-content">
             <div>
                 {shelves.map(shelf => (
-                    <div className="bookshelf">
+                    <div key={shelf.value} className="bookshelf">
                         <h2 className="bookshelf-title">{shelf.name}</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">

@@ -1,9 +1,8 @@
 import React from 'react';
-import * as BooksApi from './BooksAPI'
-import { Link } from 'react-router-dom'
-import SearchBox from './SearchBox'
 import Book from './Book';
-import { shelves, useFetchBooks } from './Constants'
+import * as BooksApi from './BooksAPI';
+import { shelves, useFetchBooks } from './Constants';
+import SearchBox from './SearchBox';
 
 const NoneShelf = "none";
 
